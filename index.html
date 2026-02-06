@@ -8,13 +8,14 @@
   <style>
     body{
       margin:0;
-      height:100vh;                 /* lock viewport */
+      height:100vh;
       background: linear-gradient(135deg,#ffe6f0,#ffd6e7);
       font-family: Arial, sans-serif;
       text-align:center;
       padding-top:120px;
-      overflow:hidden;              /* no scrolling */
-      overscroll-behavior: none;    /* prevent bounce scroll */
+      overflow:hidden;
+      overscroll-behavior:none;
+      touch-action: manipulation;
     }
 
     h1{
@@ -49,13 +50,12 @@
     }
     #yes:hover{ transform: scale(1.06); }
 
-    /* NO is normal at first (side-by-side) */
+    /* ✅ NO starts side-by-side */
     #no{
       background:#4b5563;
       color:white;
-      position: relative;  /* stays in the flex row initially */
+      position: relative; /* important: stays in flex row initially */
       z-index: 2;
-      will-change: left, top;
     }
 
     /* FINAL SCREEN (after YES) */
@@ -144,11 +144,12 @@
     ];
     let idx = 0;
 
-    // ✅ Start side-by-side, then once hovered: NO becomes fixed and keeps escaping forever
-    let activated = false;
+    let activated = false;   // becomes true after first “near” event
+    let cooldown = false;    // prevents teleporting 100 times per second
 
-    noBtn.addEventListener("mouseenter", () => {
+    function teleportNo() {
       if (!activated) {
+        // ✅ first time only: switch from flex-position to fixed
         noBtn.style.position = "fixed";
         noBtn.style.zIndex = "9999";
         activated = true;
@@ -164,24 +165,4 @@
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
 
-      noBtn.innerText = messages[idx];
-      idx = (idx + 1) % messages.length;
-    });
-
-    // After YES: show image + caption + floating hearts
-    yesBtn.onclick = function() {
-      document.body.innerHTML = `
-        <div class="final fadein">
-          <img src="heart.png" alt="Our Heart" class="photo" />
-
-          <div class="caption">
-            <p>I don’t want this to be just a moment… ❤️</p>
-            <p>I want this to be us.</p>
-            <p><b>Will you walk this journey with me?</b></p>
-          </div>
-
-          <div class="subcaption">
-            (P.S. I really hope you choose me too 😊)
-          </div>
-        </div>
-      `;
+      noBtn.innerText = messa
