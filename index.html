@@ -22,14 +22,12 @@
       line-height: 1.2;
     }
 
-    /* ✅ Buttons row (YES + NO side-by-side) */
     .btns{
       display:flex;
       justify-content:center;
       align-items:center;
       gap:16px;
       flex-wrap:wrap;
-      position: relative; /* not required, but harmless */
     }
 
     button{
@@ -49,14 +47,12 @@
     }
     #yes:hover{ transform: scale(1.06); }
 
-    /* ✅ CHANGE: NO should NOT be absolute initially (so it shows next to YES) */
+    /* ✅ NO is normal at first (side-by-side) */
     #no{
-      background: #4b5563;
+      background:#4b5563;
       color:white;
-      position: static;   /* ✅ important */
-      transform: none;    /* ✅ important */
-      left: auto;         /* ✅ important */
-      top: auto;          /* ✅ important */
+      position: relative;  /* important: keeps it in the flex row */
+      z-index: 2;
     }
 
     /* FINAL SCREEN (after YES) */
@@ -83,11 +79,7 @@
       font-weight:700;
       line-height:1.8;
     }
-
-    /* ✅ optional nicer spacing for the <p> lines */
-    .caption p{
-      margin: 12px 0;
-    }
+    .caption p{ margin:12px 0; }
 
     .subcaption{
       margin: 10px auto 0;
@@ -107,6 +99,7 @@
       user-select:none;
       pointer-events:none;
       filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+      z-index: 9999;
     }
 
     @keyframes floatUp{
@@ -114,7 +107,6 @@
       100% { transform: translateY(-110vh) scale(1.2); opacity:0; }
     }
 
-    /* Optional: subtle fade-in when switching */
     .fadein{
       animation: fadeIn 450ms ease-out;
     }
@@ -129,7 +121,7 @@
 
   <h1>Hi Prabha ❤️<br>Will you be my Valentine?</h1>
 
-  <!-- ✅ CHANGE: Put NO inside the .btns container so it displays side-by-side with YES -->
+  <!-- ✅ YES + NO side-by-side -->
   <div class="btns">
     <button id="yes">YES 💕</button>
     <button id="no">NO 😢</button>
@@ -148,15 +140,15 @@
       "my heart can't take this 💔",
       "only YES allowed 😅"
     ];
-
     let idx = 0;
 
-    // ✅ CHANGE: When hovering NO, make it absolute and move it away
-    noBtn.addEventListener("mouseover", () => {
-      // Switch to absolute ONLY when escaping
-      noBtn.style.position = "absolute";
+    // ✅ When cursor comes near NO: it escapes
+    noBtn.addEventListener("mouseenter", () => {
+      // make it escape in viewport coordinates
+      noBtn.style.position = "fixed";
+      noBtn.style.zIndex = "9999";
 
-      const padding = 20;
+      const padding = 12;
       const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
       const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
@@ -187,7 +179,6 @@
           </div>
         </div>
       `;
-
       createHearts();
     };
 
