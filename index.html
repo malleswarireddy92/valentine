@@ -8,11 +8,13 @@
   <style>
     body{
       margin:0;
+      height:100vh;                 /* lock viewport */
       background: linear-gradient(135deg,#ffe6f0,#ffd6e7);
       font-family: Arial, sans-serif;
       text-align:center;
       padding-top:120px;
-      overflow:hidden;
+      overflow:hidden;              /* no scrolling */
+      overscroll-behavior: none;    /* prevent bounce scroll */
     }
 
     h1{
@@ -47,12 +49,13 @@
     }
     #yes:hover{ transform: scale(1.06); }
 
-    /* ✅ NO is normal at first (side-by-side) */
+    /* NO is normal at first (side-by-side) */
     #no{
       background:#4b5563;
       color:white;
-      position: relative;  /* important: keeps it in the flex row */
+      position: relative;  /* stays in the flex row initially */
       z-index: 2;
+      will-change: left, top;
     }
 
     /* FINAL SCREEN (after YES) */
@@ -119,8 +122,8 @@
 
 <body>
 
-  <h1>Hi  ❤️<br>Will you be my Valentine?</h1>
-  
+  <h1>Hi ❤️<br>Will you be my Valentine?</h1>
+
   <div class="btns">
     <button id="yes">YES 💕</button>
     <button id="no">NO 😢</button>
@@ -141,32 +144,29 @@
     ];
     let idx = 0;
 
-    // ✅ When cursor comes near NO: it escapes
+    // ✅ Start side-by-side, then once hovered: NO becomes fixed and keeps escaping forever
+    let activated = false;
+
     noBtn.addEventListener("mouseenter", () => {
-    noBtn.style.position = "fixed";
-    noBtn.style.zIndex = "9999";
+      if (!activated) {
+        noBtn.style.position = "fixed";
+        noBtn.style.zIndex = "9999";
+        activated = true;
+      }
 
-    const padding = 12;
-    const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+      const padding = 12;
+      const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-    const x = Math.max(padding, Math.random() * maxX);
-    const y = Math.max(padding, Math.random() * maxY);
+      const x = padding + Math.random() * Math.max(1, maxX);
+      const y = padding + Math.random() * Math.max(1, maxY);
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top  = y + "px";
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
 
-    noBtn.innerText = messages[idx];
-    idx = (idx + 1) % messages.length;
-  });
-
-// ✅ bring it back next to YES when mouse leaves
-  noBtn.addEventListener("mouseleave", () => {
-    noBtn.style.position = "relative";
-    noBtn.style.left = "";
-    noBtn.style.top = "";
-  });
-
+      noBtn.innerText = messages[idx];
+      idx = (idx + 1) % messages.length;
+    });
 
     // After YES: show image + caption + floating hearts
     yesBtn.onclick = function() {
@@ -185,31 +185,3 @@
           </div>
         </div>
       `;
-      createHearts();
-    };
-
-    function createHearts() {
-      setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.textContent = "💗";
-
-        const size = 18 + Math.random() * 26;
-        const left = Math.random() * 100;
-        const duration = 3 + Math.random() * 3.5;
-
-        heart.style.left = left + "vw";
-        heart.style.fontSize = size + "px";
-        heart.style.animationDuration = duration + "s";
-
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), (duration + 0.2) * 1000);
-      }, 260);
-    }
-  </script>
-
-</body>
-</html>
-
-
-
