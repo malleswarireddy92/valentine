@@ -48,14 +48,13 @@
       background:#ff2e63;
       color:white;
     }
-    #yes:hover{ transform: scale(1.06); }
+    #yes:hover{ transform: scale(1.1); }
 
     /* ✅ NO starts side-by-side */
-    #no{
-      background:#4b5563;
-      color:white;
-      position: relative; /* important: stays in flex row initially */
-      z-index: 2;
+    #no {
+        position: absolute;
+        background: gray;
+        color: white;
     }
 
     /* FINAL SCREEN (after YES) */
@@ -134,6 +133,7 @@
     const yesBtn = document.getElementById("yes");
 
     const messages = [
+      "NO 😢",
       "please don’t do this 😭",
       "please no...",
       "this could be a mistake...",
@@ -166,3 +166,4 @@
       noBtn.style.top  = y + "px";
 
       noBtn.innerText = messa
+
