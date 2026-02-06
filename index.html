@@ -77,9 +77,9 @@
       font-size:24px;
       color:#ff2e63;
       font-weight:700;
-      line-height:1.8;
+      line-height:1.35;
     }
-    .caption p{ margin:22px 0; }
+    .caption p{ margin:6px 0; }
 
     .subcaption{
       margin: 10px auto 0;
@@ -120,8 +120,7 @@
 <body>
 
   <h1>Hi Prabha ❤️<br>Will you be my Valentine?</h1>
-
-  <!-- ✅ YES + NO side-by-side -->
+  
   <div class="btns">
     <button id="yes">YES 💕</button>
     <button id="no">NO 😢</button>
@@ -144,23 +143,30 @@
 
     // ✅ When cursor comes near NO: it escapes
     noBtn.addEventListener("mouseenter", () => {
-      // make it escape in viewport coordinates
-      noBtn.style.position = "fixed";
-      noBtn.style.zIndex = "9999";
+    noBtn.style.position = "fixed";
+    noBtn.style.zIndex = "9999";
 
-      const padding = 12;
-      const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
-      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    const padding = 12;
+    const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-      const x = Math.max(padding, Math.random() * maxX);
-      const y = Math.max(padding, Math.random() * maxY);
+    const x = Math.max(padding, Math.random() * maxX);
+    const y = Math.max(padding, Math.random() * maxY);
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top  = y + "px";
+    noBtn.style.left = x + "px";
+    noBtn.style.top  = y + "px";
 
-      noBtn.innerText = messages[idx];
-      idx = (idx + 1) % messages.length;
-    });
+    noBtn.innerText = messages[idx];
+    idx = (idx + 1) % messages.length;
+  });
+
+// ✅ bring it back next to YES when mouse leaves
+  noBtn.addEventListener("mouseleave", () => {
+    noBtn.style.position = "relative";
+    noBtn.style.left = "";
+    noBtn.style.top = "";
+  });
+
 
     // After YES: show image + caption + floating hearts
     yesBtn.onclick = function() {
@@ -204,4 +210,5 @@
 
 </body>
 </html>
+
 
