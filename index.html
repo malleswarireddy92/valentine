@@ -1,94 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>For Prabha ❤️</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For Prabha ❤️</title>
 
-    <style>
-        body {
-            background: linear-gradient(135deg,#ffe6f0,#ffd6e7);
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding-top: 150px;
-            overflow: hidden;
-        }
+  <style>
+    body{
+      margin:0;
+      background: linear-gradient(135deg,#ffe6f0,#ffd6e7);
+      font-family: Arial, sans-serif;
+      text-align:center;
+      padding-top:120px;
+      overflow:hidden;
+    }
 
-        h1 {
-            font-size: 38px;
-            color: #ff2e63;
-        }
+    h1{
+      font-size:38px;
+      color:#ff2e63;
+      margin: 0 16px 24px;
+      line-height: 1.2;
+    }
 
-        button {
-            padding: 14px 28px;
-            font-size: 18px;
-            border-radius: 12px;
-            border: none;
-            cursor: pointer;
-            margin: 20px;
-            transition: 0.2s;
-        }
+    .btns{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
 
-        #yes {
-            background: #ff2e63;
-            color: white;
-        }
+    button{
+      padding:14px 28px;
+      font-size:18px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      margin:10px;
+      transition:0.2s;
+      box-shadow:0 10px 20px rgba(0,0,0,0.15);
+    }
 
-        #yes:hover {
-            transform: scale(1.1);
-        }
+    #yes{
+      background:#ff2e63;
+      color:white;
+    }
+    #yes:hover{ transform: scale(1.06); }
 
-        #no {
-            position: absolute;
-            background: gray;
-            color: white;
-        }
-    </style>
+    #no{
+      background: #4b5563;
+      color:white;
+      position:absolute; /* so it can "run away" */
+      left: 55%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* FINAL SCREEN (after YES) */
+    .final{
+      text-align:center;
+      padding:40px 16px 0;
+      background: linear-gradient(#ffe6f0,#ffffff);
+      height:100vh;
+      overflow:hidden;
+    }
+
+    .photo{
+      width:min(420px, 86vw);
+      border-radius:20px;
+      box-shadow:0 14px 40px rgba(0,0,0,0.25);
+      margin-top: 10px;
+    }
+
+    .caption{
+      margin:22px auto 0;
+      max-width: 900px;
+      font-size:24px;
+      color:#ff2e63;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .subcaption{
+      margin: 10px auto 0;
+      max-width: 900px;
+      font-size:16px;
+      color:#7a2a46;
+      font-weight:600;
+      opacity:0.9;
+    }
+
+    /* Floating hearts */
+    .heart{
+      position: fixed;
+      bottom: -24px;
+      color: #ff2e63;
+      animation: floatUp linear forwards;
+      user-select:none;
+      pointer-events:none;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,0.18));
+    }
+
+    @keyframes floatUp{
+      0%   { transform: translateY(0) scale(1); opacity:1; }
+      100% { transform: translateY(-110vh) scale(1.2); opacity:0; }
+    }
+
+    /* Optional: subtle fade-in when switching */
+    .fadein{
+      animation: fadeIn 450ms ease-out;
+    }
+    @keyframes fadeIn{
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 
 <body>
 
-<h1>Hi Prabha ❤️<br>Will you be my Valentine?</h1>
+  <h1>Hi Prabha ❤️<br>Will you be my Valentine?</h1>
 
-<button id="yes">YES 💕</button>
-<button id="no">NO 😢</button>
+  <div class="btns">
+    <button id="yes">YES 💕</button>
+  </div>
 
-<script>
+  <button id="no">NO 😢</button>
 
-const noBtn = document.getElementById("no");
-const yesBtn = document.getElementById("yes");
+  <script>
+    const noBtn  = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
 
-const messages = [
-    "please don’t do this 😭",
-    "please no...",
-    "this could be a mistake...",
-    "think again...",
-    "are you sure???",
-    "my heart can't take this 💔",
-    "only YES allowed 😅"
-];
+    const messages = [
+      "please don’t do this 😭",
+      "please no...",
+      "this could be a mistake...",
+      "think of this...",
+      "are you sure???",
+      "my heart can't take this 💔",
+      "only YES allowed 😅"
+    ];
 
-let index = 0;
+    let idx = 0;
 
-noBtn.addEventListener("mouseover", () => {
+    // "No" runs away + changes text
+    noBtn.addEventListener("mouseover", () => {
+      // Move randomly (keep inside viewport)
+      const padding = 20;
+      const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
 
-    // move randomly
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 80);
+      const x = Math.max(padding, Math.random() * maxX);
+      const y = Math.max(padding, Math.random() * maxY);
 
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
 
-    // change text each time
-    noBtn.innerText = messages[index];
+      // Change label
+      noBtn.innerText = messages[idx];
+      idx = (idx + 1) % messages.length;
+    });
 
-    index = (index + 1) % messages.length;
-});
+    // After YES: show image + caption + floating hearts
+    yesBtn.onclick = function() {
+      document.body.innerHTML = `
+        <div class="final fadein">
+          <img src="heart.png" alt="Our Heart" class="photo" />
 
-yesBtn.onclick = function() {
-    document.body.innerHTML =
-        "<h1 style='color:#ff2e63;padding-top:200px;'>Yayyy ❤️<br>Best decision ever 😍💍</h1>";
-};
+          <div class="caption">
+            Our journey still has many beautiful chapters waiting ahead… ❤️<br/>
+            Let’s walk them together.
+          </div>
 
-</script>
+          <div class="subcaption">
+            (P.S. You’re officially stuck with me 😄)
+          </div>
+        </div>
+      `;
+
+      createHearts(); // start floating hearts
+    };
+
+    function createHearts() {
+      // Create hearts continuously
+      setInterval(() => {
+        const heart = document.createElement("div");
+        heart.className = "heart";
+        heart.textContent = "💗";
+
+        // random size + position + speed
+        const size = 18 + Math.random() * 26;      // 18px - 44px
+        const left = Math.random() * 100;          // vw
+        const duration = 3 + Math.random() * 3.5;  // 3s - 6.5s
+
+        heart.style.left = left + "vw";
+        heart.style.fontSize = size + "px";
+        heart.style.animationDuration = duration + "s";
+
+        document.body.appendChild(heart);
+
+        // remove after animation ends
+        setTimeout(() => heart.remove(), (duration + 0.2) * 1000);
+      }, 260);
+    }
+  </script>
 
 </body>
 </html>
